@@ -36,7 +36,7 @@ namespace FolderPurge
             }
             catch (UnauthorizedAccessException e)
             {
-                Console.WriteLine("Unable to access", e.Message);
+                Console.WriteLine("Unable to access {0}", e.Message);
             }
         }
     }
