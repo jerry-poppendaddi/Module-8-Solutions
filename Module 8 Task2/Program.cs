@@ -4,21 +4,43 @@ namespace DirectorySizer
 {
     class Program
     {
-        static void Main(string[] args)
+        static float Sizer(string folder)
         {
-            DriveInfo[] drives = DriveInfo.GetDrives();
-
-            foreach (DriveInfo drive in drives)
+            Console.WriteLine("Paste the link to the Directory the size of which you would like to be displayed:");
+            string? Link = Console.ReadLine();
+            float folderSize = 0.0f;
+            try
             {
-                Console.WriteLine($"Название: {drive.Name}");
-                Console.WriteLine($"Тип: {drive.DriveType}");
-                if (drive.IsReady)
+                if (!Directory.Exists(Link))
+                { return folderSize; }
+                else
                 {
-                    Console.WriteLine($"Объем: {drive.TotalSize}");
-                    Console.WriteLine($"Свободно: {drive.TotalFreeSpace}");
-                    Console.WriteLine($"Метка: {drive.VolumeLabel}");
+                    try
+                    {
+                        foreach (string file in Directory.GetFiles(Link))
+                        {
+                            if (File.Exists(file))
+                            {
+                                FileInfo finfo = new FileInfo(file);
+                                folderSize += finfo.Length;
+                            }
+                        }
+
+                        foreach (string dir in Directory.GetDirectories(Link))
+                            folderSize += Sizer(dir);
+                    }
+                    catch (NotSupportedException e)
+                    {
+                        Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+                    }
                 }
             }
+            catch (UnauthorizedAccessException e)
+            {
+                Console.WriteLine("Unable to calculate folder size: {0}", e.Message);
+            }
+            return folderSize;
         }
     }
 }
+
