@@ -9,28 +9,34 @@ namespace FolderPurge
         {
             Console.WriteLine("Paste the link to the Folder you would like to clean:");
             string? Link = Console.ReadLine();
-
-            if (Directory.Exists(Link))
+            try
             {
-                foreach (string link in Directory.GetFiles(Link))
+                if (Directory.Exists(Link))
                 {
-                    try
+                    foreach (string link in Directory.GetFiles(Link))
                     {
-                        DirectoryInfo dirInfo = new DirectoryInfo(Link);
+                        try
+                        {
+                            DirectoryInfo dirInfo = new DirectoryInfo(Link);
 
-                        if(dirInfo.LastAccessTime > DateTime.Now.Subtract(TimeSpan.FromMinutes(30)))
-                        { dirInfo.Delete(true); }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        Console.ReadKey();
+                            if (dirInfo.LastAccessTime > DateTime.Now.Subtract(TimeSpan.FromMinutes(30)))
+                            { dirInfo.Delete(true); }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            Console.ReadKey();
+                        }
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Directory Doesnt Exist");
+                }
             }
-            else
+            catch (UnauthorizedAccessException e)
             {
-                Console.WriteLine("Directory Doesnt Exist");
+                Console.WriteLine("Unable to access", e.Message);
             }
         }
     }
