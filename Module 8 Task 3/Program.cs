@@ -5,6 +5,7 @@ namespace FolderReport
 {
     class Program
     {
+              
         static void Main(string[] args)
         {
             
@@ -48,10 +49,9 @@ namespace FolderReport
             Console.WriteLine("Current folder size:{0}", newSize);
             Console.ReadKey();
         }
-        static float Sizer(string folder)
+        static float Sizer(string Link)
         {
-            Console.WriteLine("Paste the link to the Directory the size of which you would like to be displayed:");
-            string? Link = Console.ReadLine();
+             
             float folderSize = 0.0f;
             try
             {
